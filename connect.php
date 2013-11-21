@@ -1,8 +1,8 @@
 <?php
 $dbservertype='mysql';
-$servername='localhost';
+$servername='131.104.48.208';
 $dbusername='root';
-$dbpassword='pal';
+$dbpassword='';
 $dbname='company';
 
 $dbConnection = new mysqli($servername, $dbusername, $dbpassword, $dbname);
