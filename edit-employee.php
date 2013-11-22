@@ -1,3 +1,4 @@
+<?php include($_SERVER['DOCUMENT_ROOT'].'/view/include/header.php'); ?>
 <?php require_once('connect.php');
 
 $commentObjs = array();
@@ -60,3 +61,4 @@ print '</table>';?>
 
 
 
+<?php include($_SERVER['DOCUMENT_ROOT'].'/view/include/bottom.php'); ?>
