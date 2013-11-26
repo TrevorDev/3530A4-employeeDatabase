@@ -10,15 +10,12 @@
 	<div class="container">
 	<h1>Edit Employee Data</h1>
 	<table>
-		<tr>
-			<?php echo implode(array_map(function($field){return '<th>'.$field->Field.'</th>';},$fields)); ?>
-		</tr>
 		<?php
 			foreach($employees as $emp) {
                 print '<tr>';
                 foreach($emp as $key => $value) {
                 	if($key == 'SSN') {
-                        print '<td><a href="edit-individual-employee.php?employeeSSN='.$value.'">'.htmlentities($value, ENT_QUOTES).'</a></td>';
+                        print '<td><a href="edit-individual-user.php">'.htmlentities($value, ENT_QUOTES).'</a></td>';
                     } else {
                     	print '<td>'.htmlentities($value, ENT_QUOTES).'</td>';
                     }
