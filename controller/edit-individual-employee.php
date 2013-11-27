@@ -1,15 +1,16 @@
 <?php
 require_once($_SERVER['DOCUMENT_ROOT'].'/model/employee.php');
 
-if(isset($_POST['submitEditEmployee'])) {
-	$employeeSSN = updateEmployee($_POST);
+$employeeSSN = $_GET['employeeSSN'];
+if($employeeSSN == '') {
+	$employeeSSN = 0;
 }
 
-if($employeeSSN == '') {
-	$employeeSSN = $_GET['employeeSSN'];
-	if($employeeSSN == '') {
-		$employeeSSN = 0;
-	}
+if(isset($_POST['submitEditEmployee'])) {
+	$errorCode = updateEmployee($_POST, $employeeSSN); //error code 1 means good, 0 means bad
+}
+if($errorCode == 1) {
+	$employeeSSN = $_POST['SSN'];
 }
 $employeeObj = getEmployeeObject($employeeSSN);
 

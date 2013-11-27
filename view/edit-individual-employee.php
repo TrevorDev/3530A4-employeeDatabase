@@ -8,7 +8,7 @@
 	<h3>Dan Robinson, Trevor Baron, Derek Dekroon</h3>
 	<div class="container">
 	<h1>Edit An Employee</h1>
-		<form method='post' id='editEmployeeForm' action='/controller/edit-individual-employee.php'>
+		<form method='post' id='editEmployeeForm' action='/controller/edit-individual-employee.php?employeeSSN=<?php print $employeeSSN ?>'>
 		<?php if(isset($employeeObj)) {
 			print '<table>';
 			foreach($employeeObj as $key => $value) {

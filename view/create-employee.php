@@ -8,22 +8,15 @@
 	<h1>CIS353 Databases Assignment 4</h1>
 	<h3>Dan Robinson, Trevor Baron, Derek Dekroon</h3>
 	<div class="container">
-	<h1>Edit Employee Data</h1>
-	<table>
-		<?php
-			foreach($employees as $emp) {
-                print '<tr>';
-                foreach($emp as $key => $value) {
-                	if($key == 'SSN') {
-                        print '<td><a href="edit-individual-user.php">'.htmlentities($value, ENT_QUOTES).'</a></td>';
-                    } else {
-                    	print '<td>'.htmlentities($value, ENT_QUOTES).'</td>';
-                    }
-                }
-                print '</tr>';
-        	}
-		?>
-	</table>
+	<h1>Create an Employee</h1>
+	<form method='post' id='createEmployeeForm' action='create-employee.php'>
+		<?php print '<table>';
+			echo implode(array_map(function($field){
+				return '<tr><th>'.$field->Field.'</th><td><input name="'.$field->Field.'" type="text" /></td></tr>';
+			},$fields));
+		print '</table>'; ?>
+		<input type='submit' value='Create Employee' name='submitCreateEmployee' />
+		</form>
 	</div>
 	</body>
 </html>

@@ -9,6 +9,11 @@
 	<h3>Dan Robinson, Trevor Baron, Derek Dekroon</h3>
 	<div class="container">
 	<h1>Edit Employee Data</h1>
+
+	<a href="create-employee.php" class="btn btn-hover" hidefocus="true" style="outline: none;">
+		<span>Create an Employee</span>
+	</a>
+	<h3>All Employees</h3>
 	<table>
 		<tr>
 			<?php echo implode(array_map(function($field){return '<th>'.$field->Field.'</th>';},$fields)); ?>
