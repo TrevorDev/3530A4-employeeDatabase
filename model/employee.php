@@ -6,12 +6,27 @@ function getEmployeeFields(){
 		echo 'Could not run query: ' . $dbConnection->error;
 	}
 
-	return convertToRowArray($result);
+	$ret = convertToRowArray($result);
+	$ret=array_filter($ret,function($f){
+		if($f->Field=="date_created"){
+			return false;
+		}
+		return true;
+	});
+	return $ret;
 }
 
 function getAllEmpoyee(){
 	global $dbConnection;
 	if(!$result = $dbConnection->query("SELECT * FROM Employee")) {
+		echo 'Could not run query: ' . $dbConnection->error;
+	}
+	return convertToRowArray($result);
+}
+
+function getAllNewEmployee(){
+	global $dbConnection;
+	if(!$result = $dbConnection->query("SELECT * FROM Employee WHERE date_created > 0")) {
 		echo 'Could not run query: ' . $dbConnection->error;
 	}
 	return convertToRowArray($result);
@@ -90,18 +105,10 @@ function addEmployee($data) {
 	
 
 	$queryString = "INSERT INTO Employee (Fname, Minit, Lname, SSN, Address, Sex, Salary, Super_ssn, Dno, BDate, EmpDate, userid) 
-		VALUES ('$fName', '$minit', '$lName', $ssn, '$address', '$sex', $salary, $superSSN, $dNo, $bDate, $empDate, '$userid')";
+		VALUES ('$fName', '$minit', '$lName', $ssn, '$address', '$sex', $salary, '$superSSN', $dNo, $bDate, $empDate, '$userid')";
 	//print $queryString;
 	if(!$dbConnection->query($queryString)) {
 			echo 'Could not run query: '.$dbConnection->error;
-			return 0;
-	}
-
-	$queryString = "INSERT INTO History (ESSN, Employee_Added, WorksOn_Added, dependant_Added, PNumber) 
-		VALUES ($ssn, 1, 0, 0, 0, 0)";
-	//print $queryString;
-	if(!$dbConnection->query($queryString)) {
-			echo 'Could not create user history: '.$dbConnection->error;
 			return 0;
 	}
 
@@ -142,7 +149,7 @@ function errorcheckData($data) {
 		$errorCode = 1;
 		$errorString .= '<p>bad SSN, must be numeric value between 100 000 000 and 999 999 999</p>';
 	}
-	if (!(is_numeric($superSSN)) || strlen($superSSN) != 9) {
+	if ( $superSSN != 'null' and (!(is_numeric($superSSN)) || strlen($superSSN) != 9)) {
 		$errorCode = 1;
 		$errorString .= '<p>bad Super_SSN, must be numeric value between 100 000 000 and 999 999 999</p>';
 	}

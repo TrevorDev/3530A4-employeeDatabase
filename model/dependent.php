@@ -6,7 +6,14 @@ function getDependentFields(){
 		echo 'Could not run query: ' . $dbConnection->error;
 	}
 
-	return convertToRowArray($result);
+	$ret = convertToRowArray($result);
+	$ret=array_filter($ret,function($f){
+		if($f->Field=="date_created"){
+			return false;
+		}
+		return true;
+	});
+	return $ret;
 }
 
 function getAllNewDependent(){
@@ -25,7 +32,7 @@ function addDependent($data) {
 			$data[$key] = str_replace(array("'", '"', ';', ':'), '', $value);
 		}
 	}
-	if(errorcheckData($data) == 0) {
+	if(errorcheckDependentData($data) == 0) {
 		return 0;
 	}
 
@@ -49,7 +56,7 @@ function addDependent($data) {
 	return 1;
 }
 
-function errorcheckData($data) {
+function errorcheckDependentData($data) {
 
 	$essn = mysql_escape_string($data['Essn']);
 	$depName = mysql_escape_string($data['Dependent_name']);

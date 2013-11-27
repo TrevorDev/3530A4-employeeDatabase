@@ -5,7 +5,7 @@
 		<span>Create an Employee</span>
 	</a>
 	<h3>All Employees</h3>
-	<table>
+	<table class="table table-hover">
 		<tr>
 			<?php echo implode(array_map(function($field){return '<th>'.$field->Field.'</th>';},$fields)); ?>
 		</tr>
@@ -13,11 +13,13 @@
 			foreach($employees as $emp) {
                 print '<tr>';
                 foreach($emp as $key => $value) {
+                	if($key != 'date_created') {
                 	if($key == 'SSN') {
                         print '<td><a href="edit-individual-employee.php?employeeSSN='.$value.'">'.htmlentities($value, ENT_QUOTES).'</a></td>';
                     } else {
                     	print '<td>'.htmlentities($value, ENT_QUOTES).'</td>';
                     }
+                }
                 }
                 print '</tr>';
         	}

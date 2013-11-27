@@ -10,7 +10,7 @@
 		<input type='submit'  value='Create WorksOn' name='submitCreateWorksOn' />
 	</form>
 	<h3>All WorksOn</h3>
-	<table>
+	<table class="table table-hover">
 		<tr>
 			<?php echo implode(array_map(function($field){return '<th>'.$field->Field.'</th>';},$fields)); ?>
 		</tr>
@@ -18,9 +18,7 @@
 			foreach($worksOn as $emp) {
                 print '<tr>';
                 foreach($emp as $key => $value) {
-                	if($key == 'SSN') {
-                        print '<td><a href="edit-individual-employee.php?employeeSSN='.$value.'">'.htmlentities($value, ENT_QUOTES).'</a></td>';
-                    } else {
+                	if($key != 'date_created') {
                     	print '<td>'.htmlentities($value, ENT_QUOTES).'</td>';
                     }
                 }

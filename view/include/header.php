@@ -207,8 +207,8 @@
         <li class="menu-level-0 parent"><a href="#" hidefocus="true" style="outline: none;" class="gradient"><span>Tools</span></a>
             <ul class="submenu-1">
                 <li class="menu-level-1 first"><a href="/controller/edit-employee.php" hidefocus="true" style="outline: none;" class="gradient">Edit Employee</a></li>
-                <li class="menu-level-1"><a href="/controller/create-worksOn.php" hidefocus="true" style="outline: none;" class="gradient">Create WorksOn</a></li>
-                <li class="menu-level-1"><a href="/controller/view-all.php" hidefocus="true" style="outline: none;" class="gradient">View All WorksOn Records</a></li>
+                <!--<li class="menu-level-1"><a href="/controller/create-worksOn.php" hidefocus="true" style="outline: none;" class="gradient">Create WorksOn</a></li>-->
+                <li class="menu-level-1"><a href="/controller/create-worksOn.php" hidefocus="true" style="outline: none;" class="gradient">View All WorksOn Records</a></li>
                 <li class="menu-level-1"><a href="/controller/create-dependent.php" hidefocus="true" style="outline: none;" class="gradient">Create Dependants</a></li>
                 <li class="menu-level-1 last parent"><a href="/controller/view-new.php" hidefocus="true" style="outline: none;" class="gradient">View New Data</a></li>
             </ul>

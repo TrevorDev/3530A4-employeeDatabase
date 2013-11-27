@@ -23,6 +23,14 @@ function getAllWorksOn(){
 	return convertToRowArray($result);
 }
 
+function getAllNewWorksOn(){
+	global $dbConnection;
+	if(!$result = $dbConnection->query("SELECT * FROM WorksOn WHERE date_created > 0")) {
+		echo 'Could not run query: ' . $dbConnection->error;
+	}
+	return convertToRowArray($result);
+}
+
 
 function addWorksOn($data) {
 	global $dbConnection;
