@@ -5,8 +5,14 @@ function getWorksOnFields(){
 	if(!$result = $dbConnection->query("SHOW COLUMNS FROM WorksOn")) {
 		echo 'Could not run query: ' . $dbConnection->error;
 	}
-
-	return convertToRowArray($result);
+	$ret = convertToRowArray($result);
+	$ret=array_filter($ret,function($f){
+		if($f->Field=="date_created"){
+			return false;
+		}
+		return true;
+	});
+	return $ret;
 }
 
 function getAllWorksOn(){
@@ -17,51 +23,6 @@ function getAllWorksOn(){
 	return convertToRowArray($result);
 }
 
-function getEmployeeObject($employeeSSN) {
-	global $dbConnection;
-	if(!$result = $dbConnection->query("SELECT * FROM Employee WHERE SSN = $employeeSSN")) {
-		echo 'Could not get employee obj '.$employeeSSN.': ' . $dbConnection->error;
-		return;
-	}
-	return $result->fetch_object();
-}
-
-function updateEmployee($data, $oldSSN) {
-
-	foreach($data as $key => $value) {
-		$data[$key] = str_replace(array("'", '"', ';', ':'), '', $value);
-	}
-
-	if(errorcheckData($data) == 0) {
-		return 0;
-	}
-	global $dbConnection;
-
-	$fName = mysql_escape_string($data['Fname']);
-	$minit = mysql_escape_string($data['Minit']);
-	$lName = mysql_escape_string($data['Lname']);
-	$ssn = $data['SSN'];
-	$address = mysql_escape_string($data['Address']);
-	$sex = mysql_escape_string($data['Sex']);
-	$salary = $data['Salary'];
-	$superSSN = $data['Super_ssn'];
-	$dNo = $data['Dno'];
-	$bDate = $data['BDate'];
-	$empDate = $data['EmpDate'];
-	$userid = mysql_escape_string($data['userid']);
-
-	$queryString = "UPDATE Employee SET Fname = '$fName', Minit = '$minit', Lname = '$lName', SSN = $ssn, Address = '$address', Sex = '$sex', 
-		Salary = $salary, Super_ssn = $superSSN, Dno = $dNo, BDate = $bDate, EmpDate = $empDate, userid = '$userid'
-		WHERE SSN = $oldSSN";
-	//print $queryString;
-	if(!$dbConnection->query($queryString)) {
-			echo 'Could not run query: '.$dbConnection->error;
-			return 0;
-	}
-	echo 'User successfully updated';
-	return 1;
-
-}
 
 function addWorksOn($data) {
 	global $dbConnection;
@@ -71,26 +32,18 @@ function addWorksOn($data) {
 			$data[$key] = str_replace(array("'", '"', ';', ':'), '', $value);
 		}
 	}
-	if(errorcheckData($data) == 0) {
+	if(errorcheckWorksOnData($data) == 0) {
 		return 0;
 	}
 
-	$fName = mysql_escape_string($data['Fname']);
-	$minit = mysql_escape_string($data['Minit']);
-	$lName = mysql_escape_string($data['Lname']);
-	$ssn = $data['SSN'];
-	$address = mysql_escape_string($data['Address']);
-	$sex = mysql_escape_string($data['Sex']);
-	$salary = $data['Salary'];
-	$superSSN = $data['Super_ssn'];
-	$dNo = $data['Dno'];
-	$bDate = $data['BDate'];
-	$empDate = $data['EmpDate'];
+	$essn = mysql_escape_string($data['Essn']);
+	$pno = mysql_escape_string($data['Pno']);
+	$hours = mysql_escape_string($data['Hours']);
 	$userid = mysql_escape_string($data['userid']);
 	
 
-	$queryString = "INSERT INTO Employee (Fname, Minit, Lname, SSN, Address, Sex, Salary, Super_ssn, Dno, BDate, EmpDate, userid) 
-		VALUES ('$fName', '$minit', '$lName', $ssn, '$address', '$sex', $salary, $superSSN, $dNo, $bDate, $empDate, '$userid')";
+	$queryString = "INSERT INTO WorksOn (Essn, Pno, Hours, userid) 
+		VALUES ('$essn', '$pno', '$hours', '$userid')";
 	//print $queryString;
 	if(!$dbConnection->query($queryString)) {
 			echo 'Could not run query: '.$dbConnection->error;
@@ -100,55 +53,17 @@ function addWorksOn($data) {
 	return 1;
 }
 
-function errorcheckData($data) {
+function errorcheckWorksOnData($data) {
 
-	$fName = mysql_escape_string($data['Fname']);
-	$minit = mysql_escape_string($data['Minit']);
-	$lName = mysql_escape_string($data['Lname']);
-	$ssn = $data['SSN'];
-	$address = mysql_escape_string($data['Address']);
-	$sex = mysql_escape_string($data['Sex']);
-	$salary = $data['Salary'];
-	$superSSN = $data['Super_ssn'];
-	$dNo = $data['Dno'];
-	$bDate = $data['BDate'];
-	$empDate = $data['EmpDate'];
+	$ssn = $data['Essn'];
 	$userid = mysql_escape_string($data['userid']);
 
 	$errorString = '';
 	$errorCode = 0;
-	if(strlen($fName) < 3) {
-		$errorCode = 1;
-		$errorString .= '<p>First name < 3 characters</p>';
-	}
-	if(strlen($minit) != 1) {
-		$errorCode = 1;
-		$errorString .= '<p>Middle Initial != 1 character</p>';
-	}
-	if(strlen($lName) < 2) {
-		$errorCode = 1;
-		$errorString .= '<p>Last name < 2 characters</p>';
-	}
+	
 	if (!(is_numeric($ssn)) || strlen($ssn) != 9) {
 		$errorCode = 1;
 		$errorString .= '<p>bad SSN, must be numeric value between 100 000 000 and 999 999 999</p>';
-	}
-	if (!(is_numeric($superSSN)) || strlen($superSSN) != 9) {
-		$errorCode = 1;
-		$errorString .= '<p>bad Super_SSN, must be numeric value between 100 000 000 and 999 999 999</p>';
-	}
-	if($sex != 'M' && $sex != 'F') {
-		$errorCode = 1;
-		$errorString .= '<p>invalid gender</p>';
-	}
-	if(!is_int(intval($bDate)) || intval($bDate) < 1900 || intval($bDate) > DATE('Y') - 13) {
-		$errorCode = 1;
-		$errorString .= '<p>bad birthday year, employee is either dead or too young... probably not both</p>';
-	}
-	if(!is_int(intval($empDate)) || intval($empDate) < 1900 || intval($empDate) > DATE('Y') || intval($bDate) > intval($empDate)
-		|| intval($empDate) - intval($bDate) < 13) {
-		$errorCode = 1;
-		$errorString .= '<p>bad employment year, employee is either dead or too young... or was working before they were born</p>';
 	}
 	if(strlen($userid) < 2) {
 		$errorCode = 1;
