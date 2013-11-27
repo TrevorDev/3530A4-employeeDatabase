@@ -96,6 +96,15 @@ function addEmployee($data) {
 			echo 'Could not run query: '.$dbConnection->error;
 			return 0;
 	}
+
+	$queryString = "INSERT INTO History (ESSN, Employee_Added, WorksOn_Added, dependant_Added, PNumber) 
+		VALUES ($ssn, 1, 0, 0, 0, 0)";
+	//print $queryString;
+	if(!$dbConnection->query($queryString)) {
+			echo 'Could not create user history: '.$dbConnection->error;
+			return 0;
+	}
+
 	echo 'User successfully created';
 	return 1;
 }
