@@ -45,8 +45,7 @@ function addDependent($data) {
 	
 
 	$queryString = "INSERT INTO Dependent (Essn, Dependent_name, Sex, Bdate, Relationship, userid) 
-		VALUES ($essn, '$depName', '$sex', $bDate, '$relationship', '$userid')";
-	//print $queryString;
+		VALUES ($essn, '$depName', '$sex', '$bDate', '$relationship', '$userid')";
 	if(!$dbConnection->query($queryString)) {
 			echo 'Could not run query: '.$dbConnection->error;
 			return 0;
@@ -82,10 +81,6 @@ function errorcheckDependentData($data) {
 	if($sex != 'M' && $sex != 'F') {
 		$errorCode = 1;
 		$errorString .= '<p>invalid gender</p>';
-	}
-	if(!is_int(intval($bDate)) || intval($bDate) < 1900 || intval($bDate) > DATE('Y') - 13) {
-		$errorCode = 1;
-		$errorString .= '<p>bad birthday year, employee is either dead or too young... probably not both</p>';
 	}
 	if(strlen($userid) < 2) {
 		$errorCode = 1;

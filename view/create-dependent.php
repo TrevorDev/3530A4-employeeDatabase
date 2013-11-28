@@ -1,5 +1,5 @@
 <?php include($_SERVER['DOCUMENT_ROOT'].'/view/include/header.php'); ?>
-	<h1>Create an Employee</h1>
+	<h1>Create a Dependent</h1>
 	<form method='post' id='createDepedentForm' action='create-dependent.php'>
 	<?php print '<table>';
 		echo implode(array_map(function($field){
@@ -8,7 +8,7 @@
 			}
 		},$fields));
 	print '</table>'; ?>
-	<input type='submit' value='Create Employee' name='submitCreateDependent' />
+	<input type='submit' value='Create Dependent' name='submitCreateDependent' />
 	</form>
 
 <?php include($_SERVER['DOCUMENT_ROOT'].'/view/include/bottom.php'); ?>
